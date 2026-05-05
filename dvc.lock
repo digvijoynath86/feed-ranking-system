@@ -1,0 +1,81 @@
+schema: '2.0'
+stages:
+  generate_data:
+    cmd: python -m stages.generate_data
+    outs:
+    - path: data/raw/authors.csv
+      hash: md5
+      md5: cf3e71b9cb769832d7fa76013a7b0bda
+      size: 989
+    - path: data/raw/tweets.csv
+      hash: md5
+      md5: 5f09463e434e84ed4890648e107d417a
+      size: 25519
+    - path: data/raw/user_author.csv
+      hash: md5
+      md5: 65966bb200429d331c61636dc0150ea2
+      size: 34839
+    - path: data/raw/users.csv
+      hash: md5
+      md5: 264d54fcb555dfb33c6ddf5a2e49dfef
+      size: 3437
+  prepare_data:
+    cmd: python -m stages.prepare_data
+    deps:
+    - path: data/raw/authors.csv
+      hash: md5
+      md5: cf3e71b9cb769832d7fa76013a7b0bda
+      size: 989
+    - path: data/raw/tweets.csv
+      hash: md5
+      md5: 5f09463e434e84ed4890648e107d417a
+      size: 25519
+    - path: data/raw/user_author.csv
+      hash: md5
+      md5: 65966bb200429d331c61636dc0150ea2
+      size: 34839
+    - path: data/raw/users.csv
+      hash: md5
+      md5: 264d54fcb555dfb33c6ddf5a2e49dfef
+      size: 3437
+    outs:
+    - path: data/interim/base_df.csv
+      hash: md5
+      md5: 5cae099ddc652bb7f4295fa5b3e3bb3b
+      size: 1109221
+  build_features:
+    cmd: python -m stages.build_features
+    deps:
+    - path: data/interim/base_df.csv
+      hash: md5
+      md5: 5cae099ddc652bb7f4295fa5b3e3bb3b
+      size: 1109221
+    outs:
+    - path: data/processed/features.csv
+      hash: md5
+      md5: 6226c49aa86a951f7a6ebd001f946d95
+      size: 775243
+  simulate_logs:
+    cmd: python -m stages.simulate_logs
+    deps:
+    - path: data/processed/features.csv
+      hash: md5
+      md5: 6226c49aa86a951f7a6ebd001f946d95
+      size: 775243
+    outs:
+    - path: data/processed/logs_df.csv
+      hash: md5
+      md5: 30c86c3b975a6a9150e8c96ff007a0b4
+      size: 121377
+  train:
+    cmd: python -m stages.train
+    deps:
+    - path: data/processed/logs_df.csv
+      hash: md5
+      md5: 30c86c3b975a6a9150e8c96ff007a0b4
+      size: 121377
+    outs:
+    - path: models/ranker.pkl
+      hash: md5
+      md5: c8c24a7143e480594f51f1825eb3c741
+      size: 673838

@@ -35,5 +35,6 @@ stages:
     cmd: python -m stages.train
     deps:
       - data/processed/logs_df.csv
+      - params.yaml
     outs:
       - models/ranker.pkl
