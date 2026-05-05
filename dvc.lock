@@ -74,8 +74,12 @@ stages:
       hash: md5
       md5: 30c86c3b975a6a9150e8c96ff007a0b4
       size: 121377
+    - path: params.yaml
+      hash: md5
+      md5: a6f2f5a4e5cbc07edd2e00d93814a137
+      size: 233
     outs:
     - path: models/ranker.pkl
       hash: md5
-      md5: c8c24a7143e480594f51f1825eb3c741
-      size: 673838
+      md5: 066814a6e3b8ee2d32bdb8c3b81a978f
+      size: 682752
