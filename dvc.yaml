@@ -1,0 +1,39 @@
+stages:
+  generate_data:
+    cmd: python -m stages.generate_data
+    outs:
+      - data/raw/users.csv
+      - data/raw/authors.csv
+      - data/raw/tweets.csv
+      - data/raw/user_author.csv
+
+  prepare_data:
+    cmd: python -m stages.prepare_data
+    deps:
+      - data/raw/users.csv
+      - data/raw/authors.csv
+      - data/raw/tweets.csv
+      - data/raw/user_author.csv
+    outs:
+      - data/interim/base_df.csv
+
+  build_features:
+    cmd: python -m stages.build_features
+    deps:
+      - data/interim/base_df.csv
+    outs:
+      - data/processed/features.csv
+
+  simulate_logs:
+    cmd: python -m stages.simulate_logs
+    deps:
+      - data/processed/features.csv
+    outs:
+      - data/processed/logs_df.csv
+
+  train:
+    cmd: python -m stages.train
+    deps:
+      - data/processed/logs_df.csv
+    outs:
+      - models/ranker.pkl
